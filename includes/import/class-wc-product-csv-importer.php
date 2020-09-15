@@ -1047,6 +1047,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			'updated'  => array(),
 			'skipped'  => array(),
 		);
+        do_action( 'woocommerce_product_import_before_all_import', $this->parsed_data );
 
 		foreach ( $this->parsed_data as $parsed_data_key => $parsed_data ) {
 			do_action( 'woocommerce_product_import_before_import', $parsed_data );
@@ -1119,10 +1120,12 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 
 			if ( $this->params['prevent_timeouts'] && ( $this->time_exceeded() || $this->memory_exceeded() ) ) {
 				$this->file_position = $this->file_positions[ $index ];
+                do_action( 'woocommerce_product_import_after_all_import', $data );
 				break;
 			}
 		}
+        do_action( 'woocommerce_product_import_after_all_import', $data );
 
-		return $data;
+        return $data;
 	}
 }
